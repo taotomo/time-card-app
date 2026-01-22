@@ -1,0 +1,54 @@
+/* スタッフナビゲーション */
+.staff-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.staff-nav__link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.staff-nav__link:hover {
+    opacity: 0.7;
+}
+
+.staff-nav__logout-form {
+    margin: 0;
+}
+
+.staff-nav__link--logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .staff-nav {
+        gap: 25px;
+    }
+    
+    .staff-nav__link {
+        font-size: 13px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .staff-nav {
+        gap: 35px;
+    }
+    
+    .staff-nav__link {
+        font-size: 14px;
+    }
+}

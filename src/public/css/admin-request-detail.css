@@ -1,0 +1,192 @@
+/* 勤怠詳細（申請承認） */
+.request-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.request-detail__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.request-detail__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 4px solid #000;
+}
+
+.request-detail__content {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.request-detail__row {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    min-height: 50px;
+}
+
+.request-detail__row:last-child {
+    border-bottom: none;
+}
+
+.request-detail__label {
+    flex: 0 0 120px;
+    background-color: #f5f5f5;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #e0e0e0;
+}
+
+.request-detail__value {
+    flex: 1;
+    padding: 15px;
+    font-size: 12px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.request-detail__value-group {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.request-detail__time-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.request-detail__time {
+    color: #333;
+}
+
+.request-detail__separator {
+    color: #999;
+}
+
+.request-detail__form {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.request-detail__approve-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 60px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.request-detail__approve-btn:hover {
+    opacity: 0.8;
+}
+
+.request-detail__approved-message {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .request-detail__container {
+        padding: 30px;
+    }
+
+    .request-detail__title {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+
+    .request-detail__label {
+        flex: 0 0 150px;
+        font-size: 13px;
+        padding: 18px;
+    }
+
+    .request-detail__value {
+        font-size: 13px;
+        padding: 18px;
+    }
+
+    .request-detail__value-group {
+        padding: 18px;
+    }
+
+    .request-detail__time-group {
+        font-size: 13px;
+    }
+
+    .request-detail__approve-btn {
+        padding: 14px 80px;
+        font-size: 15px;
+    }
+
+    .request-detail__approved-message {
+        font-size: 15px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .request-detail__container {
+        padding: 40px;
+    }
+
+    .request-detail__title {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    .request-detail__label {
+        flex: 0 0 180px;
+        font-size: 14px;
+        padding: 20px;
+    }
+
+    .request-detail__value {
+        font-size: 14px;
+        padding: 20px;
+    }
+
+    .request-detail__value-group {
+        padding: 20px;
+    }
+
+    .request-detail__time-group {
+        font-size: 14px;
+    }
+
+    .request-detail__approve-btn {
+        padding: 16px 100px;
+        font-size: 16px;
+    }
+
+    .request-detail__approved-message {
+        font-size: 16px;
+    }
+}

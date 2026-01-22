@@ -1,0 +1,218 @@
+/* メインコンテンツ */
+.main {
+    min-height: calc(100vh - 120px);
+    padding: 20px 10px;
+    background-color: #f5f5f5;
+}
+
+/* 勤怠一覧 */
+.attendance {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.attendance__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.attendance__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 4px solid #000;
+}
+
+/* 日付選択 */
+.attendance__date-selector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.date-selector__button {
+    padding: 6px 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.date-selector__button:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+.date-selector__current {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 15px;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 4px;
+}
+
+.date-selector__icon {
+    font-size: 16px;
+}
+
+/* テーブル */
+.attendance__table-wrapper {
+    overflow-x: auto;
+}
+
+.attendance__table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    font-size: 11px;
+}
+
+.attendance__table thead {
+    background-color: #f8f8f8;
+}
+
+.attendance__table th {
+    padding: 10px 5px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 11px;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+.attendance__table td {
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    border-bottom: 1px solid #eee;
+}
+
+.attendance__table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.attendance__detail-link {
+    color: #000;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.attendance__detail-link:hover {
+    opacity: 0.7;
+}
+
+.attendance__empty {
+    padding: 40px !important;
+    text-align: center !important;
+    color: #999;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .main {
+        padding: 30px 20px;
+    }
+    
+    .attendance__container {
+        padding: 30px;
+    }
+    
+    .attendance__title {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+    
+    .attendance__date-selector {
+        flex-direction: row;
+        gap: 20px;
+        padding: 18px;
+    }
+    
+    .date-selector__button {
+        padding: 8px 18px;
+        font-size: 13px;
+    }
+    
+    .date-selector__current {
+        font-size: 15px;
+        padding: 8px 18px;
+    }
+    
+    .attendance__table {
+        font-size: 13px;
+    }
+    
+    .attendance__table th {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+    
+    .attendance__table td {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .main {
+        padding: 40px 20px;
+    }
+    
+    .attendance__container {
+        padding: 50px;
+    }
+    
+    .attendance__title {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .attendance__date-selector {
+        gap: 30px;
+        padding: 20px;
+    }
+    
+    .date-selector__button {
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+    
+    .date-selector__current {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+    
+    .attendance__table {
+        font-size: 14px;
+    }
+    
+    .attendance__table th {
+        padding: 18px;
+        font-size: 14px;
+    }
+    
+    .attendance__table td {
+        padding: 18px;
+        font-size: 14px;
+    }
+}

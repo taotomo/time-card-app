@@ -1,0 +1,131 @@
+/* メール認証誘導画面 */
+.verify-email {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.verify-email__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.verify-email__message {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.verify-email__success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.verify-email__actions {
+    margin-top: 30px;
+}
+
+.verify-email__note {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    padding: 14px 30px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    display: inline-block;
+    background-color: #fff;
+}
+
+.verify-email__note--link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.verify-email__note--link:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.verify-email__form {
+    margin-top: 25px;
+}
+
+.verify-email__resend-link {
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 13px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 5px;
+}
+
+.verify-email__resend-link:hover {
+    color: #0056b3;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .verify-email__container {
+        padding: 60px 50px;
+    }
+
+    .verify-email__message {
+        font-size: 15px;
+        margin-bottom: 35px;
+    }
+
+    .verify-email__success {
+        font-size: 14px;
+        padding: 14px 24px;
+    }
+
+    .verify-email__note {
+        font-size: 15px;
+        padding: 16px 40px;
+    }
+
+    .verify-email__resend-link {
+        font-size: 14px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .verify-email {
+        max-width: 700px;
+    }
+
+    .verify-email__container {
+        padding: 80px 60px;
+    }
+
+    .verify-email__message {
+        font-size: 16px;
+        margin-bottom: 40px;
+    }
+
+    .verify-email__success {
+        font-size: 15px;
+        padding: 16px 28px;
+    }
+
+    .verify-email__note {
+        font-size: 16px;
+        padding: 18px 50px;
+    }
+
+    .verify-email__resend-link {
+        font-size: 15px;
+    }
+}

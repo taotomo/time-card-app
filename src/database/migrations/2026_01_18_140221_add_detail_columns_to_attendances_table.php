@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('attendances', function (Blueprint $table) {
+            // break_timeカラムを削除し、休憩開始・終了時刻に変更
+            $table->dropColumn('break_time');
+            
+            // 休憩開始・終了時刻（複数対応のため、JSON形式で保存）
+            $table->json('break_times')->nullable()->comment('休憩時間帯（開始・終了のペア）');
+            
+            // 備考
+            $table->text('remarks')->nullable()->comment('備考');
+            
+            // 承認ステータス（0: 通常、1: 承認待ち、2: 承認済み、3: 却下）
+            $table->tinyInteger('approval_status')->default(0)->comment('承認ステータス');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->dropColumn(['break_times', 'remarks', 'approval_status']);
+            $table->integer('break_time')->default(0)->comment('休憩時間（分）');
+        });
+    }
+};

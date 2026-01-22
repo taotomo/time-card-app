@@ -1,0 +1,208 @@
+/* メインコンテンツ */
+.main {
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 会員登録 */
+.register {
+    width: 100%;
+    max-width: 450px;
+}
+
+.register__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register__title {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* フォーム */
+.register__form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group__label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group__input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group__input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.form-group__input--error {
+    border-color: #e74c3c;
+}
+
+.form-group__error {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* 登録ボタン */
+.register__button {
+    width: 100%;
+    padding: 14px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.register__button:hover {
+    background-color: #333;
+}
+
+/* ログインリンク */
+.register__login-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register__login-link a {
+    color: #666;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.register__login-link a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .main {
+        padding: 60px 20px;
+    }
+
+    .register__container {
+        padding: 50px 40px;
+    }
+
+    .register__title {
+        font-size: 22px;
+        margin-bottom: 35px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group__label {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .form-group__input {
+        padding: 14px 18px;
+        font-size: 15px;
+    }
+
+    .form-group__error {
+        font-size: 13px;
+    }
+
+    .register__button {
+        padding: 16px;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+    .register__login-link {
+        margin-top: 25px;
+    }
+
+    .register__login-link a {
+        font-size: 14px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .main {
+        padding: 80px 20px;
+    }
+
+    .register {
+        max-width: 500px;
+    }
+
+    .register__container {
+        padding: 60px 50px;
+    }
+
+    .register__title {
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-group__label {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .form-group__input {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+
+    .form-group__error {
+        font-size: 14px;
+    }
+
+    .register__button {
+        padding: 18px;
+        font-size: 17px;
+        margin-top: 20px;
+    }
+
+    .register__login-link {
+        margin-top: 30px;
+    }
+
+    .register__login-link a {
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,243 @@
+/* メインコンテンツ */
+.main {
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ログイン */
+.login {
+    width: 100%;
+    max-width: 450px;
+}
+
+.login__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login__title {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* メッセージ */
+.login__success-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.login__error-message {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* フォーム */
+.login__form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group__label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group__input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group__input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.form-group__input--error {
+    border-color: #e74c3c;
+}
+
+.form-group__error {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* ログインボタン */
+.login__button {
+    width: 100%;
+    padding: 14px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.login__button:hover {
+    background-color: #333;
+}
+
+/* 会員登録リンク */
+.login__register-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login__register-link a {
+    color: #007bff;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.login__register-link a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .main {
+        padding: 60px 20px;
+    }
+
+    .login__container {
+        padding: 50px 40px;
+    }
+
+    .login__title {
+        font-size: 22px;
+        margin-bottom: 35px;
+    }
+
+    .login__success-message,
+    .login__error-message {
+        font-size: 14px;
+        padding: 14px 18px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group__label {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .form-group__input {
+        padding: 14px 18px;
+        font-size: 15px;
+    }
+
+    .form-group__error {
+        font-size: 13px;
+    }
+
+    .login__button {
+        padding: 16px;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+    .login__register-link {
+        margin-top: 25px;
+    }
+
+    .login__register-link a {
+        font-size: 14px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .main {
+        padding: 80px 20px;
+    }
+
+    .login {
+        max-width: 500px;
+    }
+
+    .login__container {
+        padding: 60px 50px;
+    }
+
+    .login__title {
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+
+    .login__success-message,
+    .login__error-message {
+        font-size: 15px;
+        padding: 16px 20px;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-group__label {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .form-group__input {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+
+    .form-group__error {
+        font-size: 14px;
+    }
+
+    .login__button {
+        padding: 18px;
+        font-size: 17px;
+        margin-top: 20px;
+    }
+
+    .login__register-link {
+        margin-top: 30px;
+    }
+
+    .login__register-link a {
+        font-size: 15px;
+    }
+}

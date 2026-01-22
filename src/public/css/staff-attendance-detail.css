@@ -1,0 +1,243 @@
+/* 勤怠詳細 */
+.attendance-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+.attendance-detail__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-detail__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 4px solid #000;
+}
+
+.attendance-detail__warning {
+    color: #f44336;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #ffebee;
+    border-radius: 4px;
+}
+
+/* フォーム */
+.attendance-detail__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group__label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.form-group__value {
+    font-size: 14px;
+    color: #333;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-group__inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group__input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+.form-group__input:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.form-group__input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-group__input--error {
+    border-color: #f44336;
+}
+
+.form-group__separator {
+    font-size: 14px;
+    color: #666;
+}
+
+.form-group__textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group__textarea:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.form-group__textarea[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-group__textarea--error {
+    border-color: #f44336;
+}
+
+.form-group__error {
+    color: #f44336;
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+/* アクション */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.form-actions__submit {
+    padding: 12px 40px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-actions__submit:hover {
+    background-color: #333;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .attendance-detail {
+        padding: 40px 20px;
+    }
+
+    .attendance-detail__container {
+        padding: 40px 30px;
+    }
+
+    .attendance-detail__title {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    .attendance-detail__warning {
+        font-size: 14px;
+    }
+
+    .form-group {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .form-group__label {
+        min-width: 140px;
+        flex-shrink: 0;
+    }
+
+    .form-group__value,
+    .form-group__inputs,
+    .form-group__textarea {
+        flex: 1;
+    }
+
+    .form-group__input {
+        font-size: 15px;
+    }
+
+    .form-group__textarea {
+        font-size: 15px;
+    }
+
+    .form-actions__submit {
+        padding: 14px 50px;
+        font-size: 16px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .attendance-detail {
+        max-width: 900px;
+        padding: 60px 40px;
+    }
+
+    .attendance-detail__container {
+        padding: 50px 40px;
+    }
+
+    .attendance-detail__title {
+        font-size: 22px;
+        margin-bottom: 30px;
+    }
+
+    .attendance-detail__warning {
+        font-size: 15px;
+        padding: 12px 18px;
+    }
+
+    .form-group__label {
+        min-width: 160px;
+        font-size: 14px;
+    }
+
+    .form-group__input {
+        font-size: 16px;
+        padding: 12px 14px;
+    }
+
+    .form-group__textarea {
+        font-size: 16px;
+        padding: 12px 14px;
+    }
+
+    .form-actions__submit {
+        padding: 16px 60px;
+        font-size: 17px;
+    }
+}

@@ -1,0 +1,213 @@
+/* メインコンテンツ */
+.main {
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 勤怠打刻 */
+.attendance {
+    width: 100%;
+    max-width: 600px;
+}
+
+.attendance__container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+/* ステータスバッジ */
+.attendance__status {
+    margin-bottom: 30px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+.status-badge--before {
+    background-color: #e8e8e8;
+}
+
+.status-badge--working {
+    background-color: #c8e6c9;
+}
+
+.status-badge--break {
+    background-color: #fff9c4;
+}
+
+.status-badge--finished {
+    background-color: #d1c4e9;
+}
+
+/* 日付表示 */
+.attendance__date {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 時刻表示 */
+.attendance__time {
+    font-size: 48px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+/* メッセージ */
+.attendance__message {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* アクションボタン */
+.attendance__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.attendance__actions form {
+    width: 100%;
+    max-width: 300px;
+}
+
+.attendance__button {
+    width: 100%;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.attendance__button--primary {
+    background-color: #000;
+    color: #fff;
+}
+
+.attendance__button--primary:hover {
+    background-color: #333;
+}
+
+.attendance__button--secondary {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.attendance__button--secondary:hover {
+    background-color: #f5f5f5;
+}
+
+/* タブレット対応 (768px以上) */
+@media (min-width: 768px) {
+    .main {
+        padding: 60px 20px;
+    }
+
+    .attendance__container {
+        padding: 60px 50px;
+    }
+
+    .status-badge {
+        padding: 8px 24px;
+        font-size: 13px;
+    }
+
+    .attendance__date {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+
+    .attendance__time {
+        font-size: 64px;
+        margin-bottom: 40px;
+    }
+
+    .attendance__message {
+        font-size: 15px;
+    }
+
+    .attendance__actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .attendance__actions form {
+        width: auto;
+        max-width: none;
+    }
+
+    .attendance__button {
+        width: auto;
+        min-width: 160px;
+        padding: 16px 50px;
+        font-size: 16px;
+    }
+}
+
+/* PC画面対応 (1400-1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .main {
+        padding: 80px 20px;
+    }
+
+    .attendance {
+        max-width: 700px;
+    }
+
+    .attendance__container {
+        padding: 80px 60px;
+    }
+
+    .status-badge {
+        padding: 10px 28px;
+        font-size: 14px;
+    }
+
+    .attendance__date {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    .attendance__time {
+        font-size: 80px;
+        margin-bottom: 50px;
+    }
+
+    .attendance__message {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .attendance__actions {
+        gap: 25px;
+    }
+
+    .attendance__button {
+        min-width: 180px;
+        padding: 18px 60px;
+        font-size: 17px;
+    }
+}
