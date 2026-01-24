@@ -37,7 +37,7 @@ Time Card Appは、企業の勤怠管理を効率化するWebアプリケーシ�
 
 ```bash
 # 1. プロジェクトをクローン
-git clone https://github.com/YOUR_USERNAME/time-card-app.git
+git clone https://github.com/taotomo/time-card-app.git
 cd time-card-app
 
 # 2. Docker環境の構築と起動
