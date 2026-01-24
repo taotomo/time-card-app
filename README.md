@@ -2,7 +2,22 @@
 
 勤怠管理システム - Laravel 10.x + Docker環境で構築される出退勤管理アプリケーション
 
+## � プロジェクト概要
+
+Time Card Appは、企業の勤怠管理を効率化するWebアプリケーションです。
+一般スタッフは日々の出退勤や休憩時間を打刻でき、勤怠データの確認や修正申請が可能です。
+管理者は全スタッフの勤怠データを一元管理し、修正申請の承認やCSVエクスポートが行えます。
+
+### 主な特徴
+- 📱 **シンプルな打刻システム**: 出勤・休憩開始・休憩終了・退勤を簡単操作
+- 📊 **月次勤怠管理**: カレンダー形式で勤怠データを視覚的に確認
+- ✏️ **修正申請機能**: 打刻ミスの修正申請と承認フロー
+- 👥 **スタッフ別管理**: 管理者は個別スタッフの勤怠データを詳細確認
+- 📧 **メール認証**: セキュアな新規登録プロセス
+- 💾 **CSV出力**: 月次勤怠データのエクスポート機能
+
 ## 📋 目次
+- [プロジェクト概要](#プロジェクト概要)
 - [環境構築](#環境構築)
 - [使用技術](#使用技術)
 - [機能一覧](#機能一覧)
@@ -22,7 +37,7 @@
 
 ```bash
 # 1. プロジェクトをクローン
-git clone [repository-url]
+git clone https://github.com/YOUR_USERNAME/time-card-app.git
 cd time-card-app
 
 # 2. Docker環境の構築と起動
@@ -38,7 +53,7 @@ cp src/.env.example src/.env
 docker-compose exec php php artisan key:generate
 
 # 6. データベースマイグレーション & ダミーデータ投入
-docker-compose exec php php artisan migrate:fresh --seed
+docker-compose exec php php artisan migrate:fresh --seed --seeder=DummyDataSeeder
 
 # 7. ブラウザでアクセス
 # http://localhost
@@ -172,15 +187,20 @@ docker-compose exec php php artisan migrate:fresh --seed
 ## 🔑 ログイン情報
 
 ### 管理者
+- **名前**: 管理者
 - **メールアドレス**: `admin@example.com`
-- **パスワード**: `password123`
+- **パスワード**: `password`
 
 ### 一般ユーザー
 | 名前 | メールアドレス | パスワード |
 |------|--------------|-----------|
-| 西俊介 | nishi@example.com | password123 |
-| 山田太郎 | yamada@example.com | password123 |
-| 山田花子 | hanako@example.com | password123 |
+| 山田太郎 | yamada@example.com | password |
+| 佐藤花子 | sato@example.com | password |
+| 鈴木一郎 | suzuki@example.com | password |
+| 田中美咲 | tanaka@example.com | password |
+| 高橋健太 | takahashi@example.com | password |
+
+**※ すべてメール認証済みですぐにログインできます**
 
 ---
 
