@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('staff.login');
     })->name('login');
+    
+    // カスタムログイン処理
+    Route::post('/login', [LoginController::class, 'login']);
 
     // 管理者ログイン
     Route::get('/admin/login', function () {
@@ -51,7 +55,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/staff/list', [StaffController::class, 'index'])->name('admin.staff.list');
     
     // 申請管理
-    Route::get('/requests', [AttendanceController::class, 'requestsList'])->name('admin.requests');
     Route::get('/request/{id}', [AttendanceController::class, 'requestDetail'])->name('admin.request.detail');
     Route::put('/request/{id}/approve', [AttendanceController::class, 'approveRequest'])->name('admin.request.approve');
 });
@@ -77,7 +80,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/attendance/monthly', function () {
         return view('staff.monthly');
     })->name('staff.attendance.monthly');
-    
-    // 申請管理
-    Route::get('/requests', [StaffController::class, 'requestsList'])->name('staff.requests');
+});
+
+/*
+|--------------------------------------------------------------------------
+| 共通ルート（一般ユーザー・管理者共通）
+|--------------------------------------------------------------------------
+*/
+
+// 申請一覧（一般ユーザー・管理者共通パス、ミドルウェアで区別）
+Route::middleware(['auth'])->group(function () {
+    Route::get('/stamp_correction_request/list', [AttendanceController::class, 'requestsListUnified'])->name('requests.list');
 });

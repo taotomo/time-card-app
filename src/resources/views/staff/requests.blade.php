@@ -14,13 +14,13 @@
         <div class="requests__tabs">
             <button 
                 class="requests__tab {{ $activeTab === 'pending' ? 'requests__tab--active' : '' }}" 
-                onclick="location.href='{{ route('staff.requests', ['tab' => 'pending']) }}'"
+                onclick="location.href='{{ route('requests.list', ['tab' => 'pending']) }}'"
             >
                 承認待ち
             </button>
             <button 
                 class="requests__tab {{ $activeTab === 'approved' ? 'requests__tab--active' : '' }}"
-                onclick="location.href='{{ route('staff.requests', ['tab' => 'approved']) }}'"
+                onclick="location.href='{{ route('requests.list', ['tab' => 'approved']) }}'"
             >
                 承認済み
             </button>

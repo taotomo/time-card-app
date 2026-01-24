@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -16,6 +17,7 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse;
+use Illuminate\Support\Facades\Validator;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -83,14 +85,18 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.verify-email');
         });
 
-        // ログイン成功後のリダイレクト先を設定
+        // ログイン時のバリデーションをカスタマイズ
         Fortify::authenticateUsing(function (Request $request) {
-            // LoginRequestのバリデーションを使用
-            $loginRequest = app(\App\Http\Requests\LoginRequest::class);
-            $validator = validator($request->all(), $loginRequest->rules(), $loginRequest->messages());
-            
+            // LoginRequestのバリデーションルールとメッセージを使用
+            $loginRequest = new LoginRequest();
+            $validator = Validator::make(
+                $request->all(),
+                $loginRequest->rules(),
+                $loginRequest->messages()
+            );
+
             if ($validator->fails()) {
-                return null;
+                throw new \Illuminate\Validation\ValidationException($validator);
             }
             
             $user = \App\Models\User::where('email', $request->email)->first();

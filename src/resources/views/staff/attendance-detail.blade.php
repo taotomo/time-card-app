@@ -15,7 +15,7 @@
             <p class="attendance-detail__warning">* 承認待ちのため修正はできません。</p>
         @endif
         
-        <form method="POST" action="{{ route('staff.attendance.update', $attendance->id) }}" class="attendance-detail__form">
+        <form method="POST" action="{{ route('staff.attendance.update', $attendance->id) }}" class="attendance-detail__form" novalidate>
             @csrf
             @method('PUT')
             

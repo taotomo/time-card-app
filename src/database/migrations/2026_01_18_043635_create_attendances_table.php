@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->dateTime('clock_in');
             $table->dateTime('clock_out')->nullable();
-            $table->integer('break_time')->default(0)->comment('休憩時間（分）');
+            $table->text('break_times')->nullable()->comment('休憩時間帯（開始・終了のペア）');
+            $table->text('remarks')->nullable()->comment('備考');
+            $table->tinyInteger('approval_status')->default(0)->comment('承認ステータス');
             $table->timestamps();
         });
     }

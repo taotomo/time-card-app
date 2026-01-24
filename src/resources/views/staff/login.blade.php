@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}" class="login__form">
+        <form method="POST" action="{{ route('login') }}" class="login__form" novalidate>
             @csrf
 
             <div class="form-group">

@@ -57,8 +57,8 @@ class StaffAttendanceUpdateRequest extends FormRequest
                 $clockOutTime = Carbon::createFromFormat('H:i', $clockOut);
                 
                 if ($clockInTime->greaterThanOrEqualTo($clockOutTime)) {
-                    $validator->errors()->add('clock_in', '出勤時間もしくは退勤時間が不適切な値です');
-                    $validator->errors()->add('clock_out', '出勤時間もしくは退勤時間が不適切な値です');
+                    $validator->errors()->add('clock_in', '出勤時間が不適切な値です');
+                    $validator->errors()->add('clock_out', '出勤時間が不適切な値です');
                 }
             }
             

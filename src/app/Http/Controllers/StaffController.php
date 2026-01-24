@@ -71,7 +71,7 @@ class StaffController extends Controller
             'clock_in' => Carbon::now(),
             'break_times' => null,
             'remarks' => null,
-            'approval_status' => 0,
+            'approval_status' => Attendance::STATUS_NORMAL,
         ]);
         
         return redirect()->route('staff.attendance');
@@ -197,91 +197,115 @@ class StaffController extends Controller
     public function attendanceList(Request $request)
     {
         $user = auth()->user();
-        
-        // 表示月を取得（指定がなければ当月）
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $targetMonth = Carbon::parse($month . '-01');
         
-        // 前月・翌月
-        $prevMonth = $targetMonth->copy()->subMonth()->format('Y-m');
-        $nextMonth = $targetMonth->copy()->addMonth()->format('Y-m');
+        $attendances = $this->buildMonthlyAttendanceData($user, $targetMonth);
         
-        // 月の開始日と終了日
+        return view('staff.attendance-list', [
+            'attendances' => $attendances,
+            'displayMonth' => $targetMonth->format('Y年n月'),
+            'prevMonth' => $targetMonth->copy()->subMonth()->format('Y-m'),
+            'nextMonth' => $targetMonth->copy()->addMonth()->format('Y-m'),
+            'attendanceStatus' => 'before',
+        ]);
+    }
+
+    /**
+     * 月次勤怠データを生成
+     */
+    private function buildMonthlyAttendanceData($user, $targetMonth)
+    {
         $startDate = $targetMonth->copy()->startOfMonth();
         $endDate = $targetMonth->copy()->endOfMonth();
-        
-        // 月のすべての日付を生成
         $attendances = [];
         $currentDate = $startDate->copy();
         
         while ($currentDate->lte($endDate)) {
-            $dateStr = $currentDate->format('Y-m-d');
-            
-            // その日の勤怠データを取得
             $attendance = Attendance::where('user_id', $user->id)
-                ->whereDate('clock_in', $dateStr)
+                ->whereDate('clock_in', $currentDate->format('Y-m-d'))
                 ->first();
             
-            $attendanceData = [
-                'date' => $currentDate->copy(),
-                'date_formatted' => $currentDate->format('m/d') . '(' . $this->getJapaneseDayOfWeek($currentDate) . ')',
-                'attendance' => $attendance,
-                'clock_in_time' => null,
-                'clock_out_time' => null,
-                'break_duration' => null,
-                'total_work_time' => null,
-            ];
-            
-            if ($attendance) {
-                // 出勤時刻
-                $attendanceData['clock_in_time'] = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
-                
-                // 退勤時刻
-                $attendanceData['clock_out_time'] = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
-                
-                // 休憩時間を計算
-                $breakMinutes = 0;
-                if ($attendance->break_times) {
-                    foreach ($attendance->break_times as $breakTime) {
-                        if (isset($breakTime['start']) && isset($breakTime['end'])) {
-                            $start = Carbon::parse($dateStr . ' ' . $breakTime['start']);
-                            $end = Carbon::parse($dateStr . ' ' . $breakTime['end']);
-                            $breakMinutes += $end->diffInMinutes($start);
-                        }
-                    }
-                }
-                
-                if ($breakMinutes > 0) {
-                    $hours = floor($breakMinutes / 60);
-                    $minutes = $breakMinutes % 60;
-                    $attendanceData['break_duration'] = sprintf('%d:%02d', $hours, $minutes);
-                }
-                
-                // 合計勤務時間を計算
-                if ($attendance->clock_in && $attendance->clock_out) {
-                    $clockIn = Carbon::parse($attendance->clock_in);
-                    $clockOut = Carbon::parse($attendance->clock_out);
-                    $totalMinutes = $clockOut->diffInMinutes($clockIn) - $breakMinutes;
-                    
-                    if ($totalMinutes > 0) {
-                        $hours = floor($totalMinutes / 60);
-                        $minutes = $totalMinutes % 60;
-                        $attendanceData['total_work_time'] = sprintf('%d:%02d', $hours, $minutes);
-                    }
-                }
-            }
-            
-            $attendances[] = (object) $attendanceData;
+            $attendances[] = (object) $this->formatAttendanceData($currentDate->copy(), $attendance);
             $currentDate->addDay();
         }
         
-        return view('staff.attendance-list', [
-            'attendances' => $attendances,
-            'displayMonth' => $targetMonth->format('Y/m'),
-            'prevMonth' => $prevMonth,
-            'nextMonth' => $nextMonth,
-            'attendanceStatus' => 'before', // ヘッダーナビゲーション用
-        ]);
+        return $attendances;
+    }
+
+    /**
+     * 勤怠データをフォーマット
+     */
+    private function formatAttendanceData($date, $attendance)
+    {
+        $data = [
+            'date' => $date,
+            'date_formatted' => $date->format('m/d') . '(' . $this->getJapaneseDayOfWeek($date) . ')',
+            'attendance' => $attendance,
+            'clock_in_time' => null,
+            'clock_out_time' => null,
+            'break_duration' => null,
+            'total_work_time' => null,
+        ];
+        
+        if ($attendance) {
+            $data['clock_in_time'] = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
+            $data['clock_out_time'] = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
+            
+            $breakMinutes = $this->calculateBreakMinutes($attendance, $date->format('Y-m-d'));
+            if ($breakMinutes > 0) {
+                $data['break_duration'] = $this->formatMinutesToTime($breakMinutes);
+            }
+            
+            if ($attendance->clock_in && $attendance->clock_out) {
+                $totalMinutes = $this->calculateTotalWorkMinutes($attendance, $breakMinutes);
+                if ($totalMinutes > 0) {
+                    $data['total_work_time'] = $this->formatMinutesToTime($totalMinutes);
+                }
+            }
+        }
+        
+        return $data;
+    }
+
+    /**
+     * 休憩時間を分単位で計算
+     */
+    private function calculateBreakMinutes($attendance, $dateStr)
+    {
+        $breakMinutes = 0;
+        
+        if ($attendance->break_times) {
+            foreach ($attendance->break_times as $breakTime) {
+                if (isset($breakTime['start']) && isset($breakTime['end'])) {
+                    $start = Carbon::parse($dateStr . ' ' . $breakTime['start']);
+                    $end = Carbon::parse($dateStr . ' ' . $breakTime['end']);
+                    $breakMinutes += $end->diffInMinutes($start);
+                }
+            }
+        }
+        
+        return $breakMinutes;
+    }
+
+    /**
+     * 合計勤務時間を分単位で計算
+     */
+    private function calculateTotalWorkMinutes($attendance, $breakMinutes)
+    {
+        $clockIn = Carbon::parse($attendance->clock_in);
+        $clockOut = Carbon::parse($attendance->clock_out);
+        return $clockOut->diffInMinutes($clockIn) - $breakMinutes;
+    }
+
+    /**
+     * 分を時間:分形式に変換
+     */
+    private function formatMinutesToTime($minutes)
+    {
+        $hours = floor($minutes / 60);
+        $mins = $minutes % 60;
+        return sprintf('%d:%02d', $hours, $mins);
     }
 
     /**
@@ -325,7 +349,7 @@ class StaffController extends Controller
             ->firstOrFail();
         
         // 承認待ちの場合は更新不可
-        if ($attendance->approval_status == 1) {
+        if ($attendance->isPending()) {
             return redirect()->back()->withErrors(['message' => '承認待ちのため修正はできません。']);
         }
         
@@ -352,7 +376,7 @@ class StaffController extends Controller
             'clock_out' => $clockOut,
             'break_times' => $breakTimes ?: null,
             'remarks' => $request->remarks,
-            'approval_status' => 1, // 承認待ちに設定
+            'approval_status' => Attendance::STATUS_PENDING,
         ]);
         
         return redirect()->route('staff.attendance.list')->with('success', '修正申請を送信しました');
@@ -368,17 +392,15 @@ class StaffController extends Controller
         
         // タブに応じて申請を取得
         if ($activeTab === 'approved') {
-            // 承認済み（approval_status = 2）
             $requests = Attendance::with('user')
                 ->where('user_id', $user->id)
-                ->where('approval_status', 2)
+                ->where('approval_status', Attendance::STATUS_APPROVED)
                 ->orderBy('updated_at', 'desc')
                 ->get();
         } else {
-            // 承認待ち（approval_status = 1）
             $requests = Attendance::with('user')
                 ->where('user_id', $user->id)
-                ->where('approval_status', 1)
+                ->where('approval_status', Attendance::STATUS_PENDING)
                 ->orderBy('updated_at', 'desc')
                 ->get();
         }

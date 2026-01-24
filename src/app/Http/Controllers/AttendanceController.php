@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\AdminAttendanceUpdateRequest;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
@@ -231,29 +232,17 @@ class AttendanceController extends Controller
     /**
      * 勤怠詳細の更新処理
      */
-    public function update(Request $request, $id)
+    public function update(AdminAttendanceUpdateRequest $request, $id)
     {
         $attendance = \App\Models\Attendance::findOrFail($id);
 
         // 承認待ちの場合は修正不可
-        if ($attendance->approval_status === 1) {
+        if ($attendance->isPending()) {
             return back()->withErrors(['message' => '承認待ちのため修正はできません。']);
         }
 
-        // バリデーション
-        $validated = $request->validate([
-            'clock_in_month' => 'required|integer|min:1|max:12',
-            'clock_in_day' => 'required|integer|min:1|max:31',
-            'clock_in_time' => 'required',
-            'clock_out_time' => 'nullable',
-            'break_start_1' => 'nullable',
-            'break_end_1' => 'nullable',
-            'break_start_2' => 'nullable',
-            'break_end_2' => 'nullable',
-            'remarks' => 'required',
-        ], [
-            'remarks.required' => '備考を記入してください',
-        ]);
+        // バリデーション済みデータを取得
+        $validated = $request->validated();
 
         // 年月日を組み立て
         $year = Carbon::parse($attendance->clock_in)->format('Y');
@@ -265,30 +254,11 @@ class AttendanceController extends Controller
             ? $clockInDate . ' ' . $validated['clock_out_time']
             : null;
 
-        // 出勤・退勤時刻のバリデーション
-        if ($clockOutDateTime && Carbon::parse($clockInDateTime)->gte(Carbon::parse($clockOutDateTime))) {
-            return back()->withErrors(['time_error' => '出勤時間もしくは退勤時間が不適切な値です'])->withInput();
-        }
-
-        // 休憩時間の設定と検証
+        // 休憩時間の設定
         $breakTimes = [];
         
         // 休憩1
         if ($validated['break_start_1'] && $validated['break_end_1']) {
-            $breakStart1 = Carbon::parse($clockInDate . ' ' . $validated['break_start_1']);
-            $breakEnd1 = Carbon::parse($clockInDate . ' ' . $validated['break_end_1']);
-            
-            // 休憩開始が出勤時刻より前、または退勤時刻より後
-            if ($breakStart1->lt(Carbon::parse($clockInDateTime)) || 
-                ($clockOutDateTime && $breakStart1->gt(Carbon::parse($clockOutDateTime)))) {
-                return back()->withErrors(['break_error' => '休憩時間が不適切な値です'])->withInput();
-            }
-            
-            // 休憩終了が退勤時刻より後
-            if ($clockOutDateTime && $breakEnd1->gt(Carbon::parse($clockOutDateTime))) {
-                return back()->withErrors(['break_error' => '休憩時間もしくは退勤時間が不適切な値です'])->withInput();
-            }
-            
             $breakTimes[] = [
                 'start' => $validated['break_start_1'],
                 'end' => $validated['break_end_1'],
@@ -297,20 +267,6 @@ class AttendanceController extends Controller
 
         // 休憩2
         if ($validated['break_start_2'] && $validated['break_end_2']) {
-            $breakStart2 = Carbon::parse($clockInDate . ' ' . $validated['break_start_2']);
-            $breakEnd2 = Carbon::parse($clockInDate . ' ' . $validated['break_end_2']);
-            
-            // 休憩開始が出勤時刻より前、または退勤時刻より後
-            if ($breakStart2->lt(Carbon::parse($clockInDateTime)) || 
-                ($clockOutDateTime && $breakStart2->gt(Carbon::parse($clockOutDateTime)))) {
-                return back()->withErrors(['break_error' => '休憩時間が不適切な値です'])->withInput();
-            }
-            
-            // 休憩終了が退勤時刻より後
-            if ($clockOutDateTime && $breakEnd2->gt(Carbon::parse($clockOutDateTime))) {
-                return back()->withErrors(['break_error' => '休憩時間もしくは退勤時間が不適切な値です'])->withInput();
-            }
-            
             $breakTimes[] = [
                 'start' => $validated['break_start_2'],
                 'end' => $validated['break_end_2'],
@@ -330,7 +286,7 @@ class AttendanceController extends Controller
     }
 
     /**
-     * 申請一覧画面を表示
+     * 申請一覧画面を表示（管理者用）
      */
     public function requestsList(Request $request)
     {
@@ -338,15 +294,13 @@ class AttendanceController extends Controller
         
         // タブに応じて申請を取得
         if ($activeTab === 'approved') {
-            // 承認済み（approval_status = 2）
             $requests = \App\Models\Attendance::with('user')
-                ->where('approval_status', 2)
+                ->where('approval_status', \App\Models\Attendance::STATUS_APPROVED)
                 ->orderBy('updated_at', 'desc')
                 ->get();
         } else {
-            // 承認待ち（approval_status = 1）
             $requests = \App\Models\Attendance::with('user')
-                ->where('approval_status', 1)
+                ->where('approval_status', \App\Models\Attendance::STATUS_PENDING)
                 ->orderBy('updated_at', 'desc')
                 ->get();
         }
@@ -355,6 +309,60 @@ class AttendanceController extends Controller
             'requests' => $requests,
             'activeTab' => $activeTab,
         ]);
+    }
+
+    /**
+     * 申請一覧画面を表示（一般ユーザー・管理者共通）
+     * ミドルウェアで認証を区別し、同じパスを使用
+     */
+    public function requestsListUnified(Request $request)
+    {
+        $user = auth()->user();
+        $activeTab = $request->input('tab', 'pending');
+        
+        // 管理者判定
+        $isAdmin = ($user->email === 'admin@example.com');
+        
+        if ($isAdmin) {
+            // 管理者：全ユーザーの申請を取得
+            if ($activeTab === 'approved') {
+                $requests = \App\Models\Attendance::with('user')
+                    ->where('approval_status', \App\Models\Attendance::STATUS_APPROVED)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            } else {
+                $requests = \App\Models\Attendance::with('user')
+                    ->where('approval_status', \App\Models\Attendance::STATUS_PENDING)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            }
+            
+            return view('attendance.requests', [
+                'requests' => $requests,
+                'activeTab' => $activeTab,
+            ]);
+        } else {
+            // 一般ユーザー：自分の申請のみ取得
+            if ($activeTab === 'approved') {
+                $requests = \App\Models\Attendance::with('user')
+                    ->where('user_id', $user->id)
+                    ->where('approval_status', \App\Models\Attendance::STATUS_APPROVED)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            } else {
+                $requests = \App\Models\Attendance::with('user')
+                    ->where('user_id', $user->id)
+                    ->where('approval_status', \App\Models\Attendance::STATUS_PENDING)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            }
+            
+            return view('staff.requests', [
+                'requests' => $requests,
+                'activeTab' => $activeTab,
+                'attendanceStatus' => 'before',
+            ]);
+        }
     }
 
     /**
@@ -377,16 +385,15 @@ class AttendanceController extends Controller
         $attendance = \App\Models\Attendance::findOrFail($id);
         
         // 承認待ちの場合のみ承認可能
-        if ($attendance->approval_status != 1) {
+        if (!$attendance->isPending()) {
             return redirect()->back()->withErrors(['message' => 'この申請は承認できません。']);
         }
         
-        // approval_status を承認済み(2)に変更
         $attendance->update([
-            'approval_status' => 2,
+            'approval_status' => \App\Models\Attendance::STATUS_APPROVED,
         ]);
         
-        return redirect()->route('admin.requests', ['tab' => 'approved'])
+        return redirect()->route('requests.list', ['tab' => 'approved'])
             ->with('success', '申請を承認しました');
     }
 }

@@ -11,7 +11,7 @@
     <div class="login__container">
         <h2 class="login__title">管理者ログイン</h2>
         
-        <form method="POST" action="{{ route('login') }}" class="login__form">
+        <form method="POST" action="{{ route('login') }}" class="login__form" novalidate>
             @csrf
             
             <div class="form__group">
@@ -22,7 +22,6 @@
                     name="email" 
                     class="form__input @error('email') form__input--error @enderror" 
                     value="{{ old('email') }}" 
-                    required 
                     autofocus
                 >
                 @error('email')
@@ -36,8 +35,7 @@
                     type="password" 
                     id="password" 
                     name="password" 
-                    class="form__input @error('password') form__input--error @enderror" 
-                    required
+                    class="form__input @error('password') form__input--error @enderror"
                 >
                 @error('password')
                     <span class="form__error">{{ $message }}</span>

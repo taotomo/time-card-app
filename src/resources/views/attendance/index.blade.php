@@ -17,7 +17,7 @@
             </a>
             <div class="date-selector__current">
                 <span class="date-selector__icon">📅</span>
-                <span class="date-selector__text">{{ $date->format('Y/m/d') }}</span>
+                <span class="date-selector__text">{{ $date->format('Y-m-d') }}</span>
             </div>
             <a href="{{ route('admin.attendance.list', ['date' => $date->copy()->addDay()->format('Y-m-d')]) }}" class="date-selector__button">
                 翌日 ＞

@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -16,9 +17,13 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        // FormRequestのバリデーションルールを使用
-        $validator = app(RegisterRequest::class);
-        $validated = validator($input, $validator->rules(), $validator->messages())->validate();
+        // RegisterRequestのバリデーションルールとメッセージを使用
+        $registerRequest = new RegisterRequest();
+        $validated = Validator::make(
+            $input,
+            $registerRequest->rules(),
+            $registerRequest->messages()
+        )->validate();
 
         return User::create([
             'name' => $validated['name'],

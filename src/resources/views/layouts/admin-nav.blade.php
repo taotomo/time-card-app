@@ -5,7 +5,7 @@
     <a href="{{ route('admin.staff.list') }}" class="admin-nav__link {{ request()->routeIs('admin.staff.list') ? 'admin-nav__link--active' : '' }}">
         スタッフ一覧
     </a>
-    <a href="{{ route('admin.requests') }}" class="admin-nav__link {{ request()->routeIs('admin.requests') ? 'admin-nav__link--active' : '' }}">
+    <a href="{{ route('requests.list') }}" class="admin-nav__link {{ request()->routeIs('requests.list') ? 'admin-nav__link--active' : '' }}">
         申請一覧
     </a>
     <form method="POST" action="{{ route('logout') }}" class="admin-nav__logout-form">
